@@ -1,9 +1,18 @@
 ###
-POST http://localhost:8080/users
+POST http://localhost:8080/users/register
 Content-Type: application/json
 
 {
   "name": "테스트 이름",
+  "email": "테스트 이메일",
+  "password": "테스트 비밀번호"
+}
+
+###
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
   "email": "테스트 이메일",
   "password": "테스트 비밀번호"
 }

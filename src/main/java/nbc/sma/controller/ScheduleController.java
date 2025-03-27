@@ -1,5 +1,6 @@
 package nbc.sma.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.request.UpdateScheduleRequest;
 import nbc.sma.dto.request.ScheduleRequest;
@@ -19,7 +20,7 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<ScheduleResponse> createSchedule(
-            @RequestBody ScheduleRequest req
+            @Valid @RequestBody ScheduleRequest req
     ) {
        ScheduleResponse res = scheduleService.createSchedule(req);
        return new ResponseEntity<>(res, HttpStatus.CREATED);
@@ -42,7 +43,7 @@ public class ScheduleController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable Long id,
-            @RequestBody UpdateScheduleRequest req
+            @Valid @RequestBody UpdateScheduleRequest req
     ) {
         scheduleService.updateSchedule(id, req);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -1,7 +1,10 @@
 package nbc.sma.controller;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import nbc.sma.dto.request.SignUpRequest;
+import nbc.sma.dto.request.LoginRequest;
+import nbc.sma.dto.request.RegisterRequest;
 import nbc.sma.dto.request.UpdateUserRequest;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.dto.response.UsersResponse;
@@ -17,12 +20,22 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponse> signUp(
-            @RequestBody SignUpRequest req
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(
+            @Valid @RequestBody RegisterRequest req
     ) {
-        UserResponse res = userService.createUser(req);
+        UserResponse res = userService.register(req);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> signIn(
+            @Valid @RequestBody LoginRequest req,
+            HttpSession session
+    ) {
+        UserResponse user = userService.login(req);
+        session.setAttribute("userId", user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping
@@ -42,7 +55,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUser(
             @PathVariable Long id,
-            @RequestBody UpdateUserRequest req
+            @Valid @RequestBody UpdateUserRequest req
     ) {
         userService.update(id, req);
         return new ResponseEntity<>(HttpStatus.OK);
