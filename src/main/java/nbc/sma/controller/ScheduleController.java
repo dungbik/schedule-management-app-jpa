@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.request.UpdateScheduleRequest;
 import nbc.sma.dto.request.ScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
-import nbc.sma.dto.response.SchedulesResponse;
 import nbc.sma.security.SessionConst;
 import nbc.sma.service.ScheduleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +31,10 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<SchedulesResponse> findSchedules() {
-        SchedulesResponse res = scheduleService.findSchedules();
+    public ResponseEntity<Page<ScheduleResponse>> findSchedules(
+            @PageableDefault Pageable pageable
+    ) {
+        Page<ScheduleResponse> res = scheduleService.findSchedules(pageable);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

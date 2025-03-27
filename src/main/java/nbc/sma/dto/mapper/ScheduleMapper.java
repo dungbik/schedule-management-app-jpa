@@ -3,13 +3,10 @@ package nbc.sma.dto.mapper;
 import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.request.ScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
-import nbc.sma.dto.response.SchedulesResponse;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.entity.Schedule;
 import nbc.sma.entity.User;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -35,12 +32,6 @@ public class ScheduleMapper {
                 schedule.getTask(),
                 schedule.getCreatedAt(),
                 schedule.getUpdatedAt()
-        );
-    }
-
-    public SchedulesResponse toResponse(List<Schedule> schedules) {
-        return new SchedulesResponse(
-                schedules.stream().map(this::toResponse).toList()
         );
     }
 }

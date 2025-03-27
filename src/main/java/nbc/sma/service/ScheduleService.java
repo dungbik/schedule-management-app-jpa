@@ -5,17 +5,17 @@ import nbc.sma.dto.mapper.ScheduleMapper;
 import nbc.sma.dto.request.UpdateScheduleRequest;
 import nbc.sma.dto.request.ScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
-import nbc.sma.dto.response.SchedulesResponse;
 import nbc.sma.entity.Schedule;
 import nbc.sma.entity.User;
 import nbc.sma.exception.ForbiddenException;
 import nbc.sma.exception.NotFoundException;
 import nbc.sma.repository.ScheduleRepository;
 import nbc.sma.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -38,10 +38,8 @@ public class ScheduleService {
         return scheduleMapper.toResponse(schedule);
     }
 
-    public SchedulesResponse findSchedules() {
-        List<Schedule> schedules = scheduleRepository.findAll();
-
-        return scheduleMapper.toResponse(schedules);
+    public Page<ScheduleResponse> findSchedules(Pageable pageable) {
+        return scheduleRepository.findSchedules(pageable);
     }
 
     public ScheduleResponse findSchedule(Long id) {
