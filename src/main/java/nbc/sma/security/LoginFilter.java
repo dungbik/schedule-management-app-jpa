@@ -16,8 +16,18 @@ import java.io.IOException;
 @Slf4j
 public class LoginFilter implements Filter {
 
+    // 언제든 접근 가능한 PATH 목록
     private static final String[] PUBLIC_PATH_LIST = {"/users/register", "/users/login"};
 
+    /**
+     * public/private path 를 구분하여 private path 일 경우 인증 처리
+     * 
+     * @param request ServletRequest
+     * @param response ServletResponse
+     * @param filterChain FilterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(
             ServletRequest request,
@@ -42,6 +52,12 @@ public class LoginFilter implements Filter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * 인증에 실패하여 ErrorResponse 를 응답에 담는다.
+     *
+     * @param requestURI 요청된 URI
+     * @param res HttpServletResponse
+     */
     private void exceptionHandler(String requestURI, HttpServletResponse res) {
         res.setStatus(HttpStatus.UNAUTHORIZED.value());
         res.setContentType("application/json");
