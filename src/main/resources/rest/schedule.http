@@ -1,0 +1,28 @@
+###
+POST http://localhost:8080/schedules
+Content-Type: application/json
+
+{
+  "user_name": "테스트 이름",
+  "title": "테스트 제목",
+  "task": "테스트 할 일"
+}
+
+###
+GET http://localhost:8080/schedules
+
+###
+GET http://localhost:8080/schedules/1
+
+###
+PUT http://localhost:8080/schedules/1
+Content-Type: application/json
+
+{
+  "user_name": "테스트 이름 수정",
+  "title": "테스트 제목 수정",
+  "task": "테스트 할 일 수정"
+}
+
+###
+DELETE http://localhost:8080/schedules/1
