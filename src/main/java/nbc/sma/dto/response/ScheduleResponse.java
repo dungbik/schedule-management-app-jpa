@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record ScheduleResponse(
         Long id,
-        String userName,
+        UserResponse user,
         String title,
         String task,
         LocalDateTime createdAt,

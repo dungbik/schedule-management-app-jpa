@@ -20,16 +20,16 @@ public class Schedule extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String userName;
-
-    @Column(nullable = false)
     private String title;
 
     @Column(length = 200, nullable = false)
     private String task;
 
-    public void update(String userName, String title, String task) {
-        this.userName = userName;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public void update(String title, String task) {
         this.title = title;
         this.task = task;
     }

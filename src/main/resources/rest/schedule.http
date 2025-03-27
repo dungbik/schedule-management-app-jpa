@@ -3,7 +3,7 @@ POST http://localhost:8080/schedules
 Content-Type: application/json
 
 {
-  "user_name": "테스트 이름",
+  "user_id": 1,
   "title": "테스트 제목",
   "task": "테스트 할 일"
 }

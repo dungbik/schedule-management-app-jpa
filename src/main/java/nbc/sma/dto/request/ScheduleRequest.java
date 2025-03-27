@@ -1,7 +1,7 @@
 package nbc.sma.dto.request;
 
 public record ScheduleRequest(
-        String userName,
+        Long userId,
         String title,
         String task
 ) {

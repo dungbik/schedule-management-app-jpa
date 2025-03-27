@@ -7,7 +7,9 @@ import nbc.sma.dto.request.ScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
 import nbc.sma.dto.response.SchedulesResponse;
 import nbc.sma.entity.Schedule;
+import nbc.sma.entity.User;
 import nbc.sma.repository.ScheduleRepository;
+import nbc.sma.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +22,14 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final ScheduleMapper scheduleMapper;
+    private final UserRepository userRepository;
 
     @Transactional
     public ScheduleResponse createSchedule(ScheduleRequest req) {
-        Schedule schedule = scheduleMapper.toEntity(req);
+        User user = userRepository.findById(req.userId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Schedule schedule = scheduleMapper.toEntity(req, user);
         scheduleRepository.save(schedule);
 
         return scheduleMapper.toResponse(schedule);
@@ -52,7 +58,7 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
 
-        schedule.update(req.userName(), req.title(), req.task());
+        schedule.update(req.title(), req.task());
         scheduleRepository.save(schedule);
     }
 }

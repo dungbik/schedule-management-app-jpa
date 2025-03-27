@@ -1,0 +1,26 @@
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "테스트 이름",
+  "email": "테스트 이메일"
+}
+
+###
+GET http://localhost:8080/users
+
+###
+GET http://localhost:8080/users/1
+
+###
+PUT http://localhost:8080/users/2
+Content-Type: application/json
+
+{
+  "name": "테스트 이름 수정",
+  "email": "테스트 이메일 수정"
+}
+
+###
+DELETE http://localhost:8080/users/1
