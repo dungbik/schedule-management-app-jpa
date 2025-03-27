@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> signIn(
+    public ResponseEntity<UserResponse> login(
             @Valid @RequestBody LoginRequest req,
             HttpSession session
     ) {

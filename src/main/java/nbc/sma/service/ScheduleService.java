@@ -3,7 +3,7 @@ package nbc.sma.service;
 import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.mapper.ScheduleMapper;
 import nbc.sma.dto.request.UpdateScheduleRequest;
-import nbc.sma.dto.request.ScheduleRequest;
+import nbc.sma.dto.request.CreateScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
 import nbc.sma.entity.Schedule;
 import nbc.sma.entity.User;
@@ -28,7 +28,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ScheduleResponse createSchedule(Long userId, ScheduleRequest req) {
+    public ScheduleResponse createSchedule(Long userId, CreateScheduleRequest req) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 

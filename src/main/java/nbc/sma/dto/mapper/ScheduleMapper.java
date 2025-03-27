@@ -1,7 +1,7 @@
 package nbc.sma.dto.mapper;
 
 import lombok.RequiredArgsConstructor;
-import nbc.sma.dto.request.ScheduleRequest;
+import nbc.sma.dto.request.CreateScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.entity.Schedule;
@@ -14,7 +14,7 @@ public class ScheduleMapper {
 
     private final UserMapper userMapper;
 
-    public Schedule toEntity(ScheduleRequest req, User user) {
+    public Schedule toEntity(CreateScheduleRequest req, User user) {
         return Schedule.builder()
                 .user(user)
                 .title(req.title())

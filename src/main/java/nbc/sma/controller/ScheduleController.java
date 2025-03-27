@@ -3,7 +3,7 @@ package nbc.sma.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.request.UpdateScheduleRequest;
-import nbc.sma.dto.request.ScheduleRequest;
+import nbc.sma.dto.request.CreateScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
 import nbc.sma.security.SessionConst;
 import nbc.sma.service.ScheduleService;
@@ -23,7 +23,7 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<ScheduleResponse> createSchedule(
-            @Valid @RequestBody ScheduleRequest req,
+            @Valid @RequestBody CreateScheduleRequest req,
             @SessionAttribute(name = SessionConst.LOGIN_USER) Long userId
     ) {
        ScheduleResponse res = scheduleService.createSchedule(userId, req);
