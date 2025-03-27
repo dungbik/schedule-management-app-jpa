@@ -1,7 +1,7 @@
 package nbc.sma.controller;
 
 import lombok.RequiredArgsConstructor;
-import nbc.sma.dto.request.CreateUserRequest;
+import nbc.sma.dto.request.SignUpRequest;
 import nbc.sma.dto.request.UpdateUserRequest;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.dto.response.UsersResponse;
@@ -18,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(
-            @RequestBody CreateUserRequest req
+    public ResponseEntity<UserResponse> signUp(
+            @RequestBody SignUpRequest req
     ) {
         UserResponse res = userService.createUser(req);
         return new ResponseEntity<>(res, HttpStatus.CREATED);

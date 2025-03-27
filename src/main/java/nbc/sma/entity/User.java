@@ -20,9 +20,14 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50, nullable = false)
     private String name;
 
+    @Column(length = 50, nullable = false)
     private String email;
+
+    @Column(length = 50, nullable = false)
+    private String password;
 
     @OneToMany(mappedBy = "user")
     private List<Schedule> schedules;

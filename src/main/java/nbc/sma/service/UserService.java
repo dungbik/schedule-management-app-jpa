@@ -2,7 +2,7 @@ package nbc.sma.service;
 
 import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.mapper.UserMapper;
-import nbc.sma.dto.request.CreateUserRequest;
+import nbc.sma.dto.request.SignUpRequest;
 import nbc.sma.dto.request.UpdateUserRequest;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.dto.response.UsersResponse;
@@ -22,7 +22,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Transactional
-    public UserResponse createUser(CreateUserRequest req) {
+    public UserResponse createUser(SignUpRequest req) {
         User user = userMapper.toEntity(req);
         userRepository.save(user);
 

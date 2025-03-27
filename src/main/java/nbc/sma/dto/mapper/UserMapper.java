@@ -1,6 +1,6 @@
 package nbc.sma.dto.mapper;
 
-import nbc.sma.dto.request.CreateUserRequest;
+import nbc.sma.dto.request.SignUpRequest;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.dto.response.UsersResponse;
 import nbc.sma.entity.User;
@@ -15,10 +15,11 @@ public class UserMapper {
         return new UserResponse(user.getId(), user.getName(), user.getEmail());
     }
 
-    public User toEntity(CreateUserRequest req) {
+    public User toEntity(SignUpRequest req) {
         return User.builder()
                 .name(req.name())
                 .email(req.email())
+                .password(req.password())
                 .build();
     }
 
