@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT new nbc.sma.dto.response.CommentResponse(c.id, new nbc.sma.dto.response.UserResponse(c.user.id, c.user.name, c.user.email), c.content, c.createdAt, c.updatedAt) FROM Comment c WHERE c.schedule.id = :scheduleId")
+    @Query("SELECT new nbc.sma.dto.response.CommentResponse(c.id, new nbc.sma.dto.response.UserResponse(c.user.id, c.user.name, c.user.email), c.content, c.createdAt, c.updatedAt) FROM Comment c WHERE c.schedule.id = :scheduleId ORDER BY c.updatedAt DESC")
     Page<CommentResponse> findAllBySchedule(Long scheduleId, Pageable pageable);
 }

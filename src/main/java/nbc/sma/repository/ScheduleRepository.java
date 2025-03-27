@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    @Query("SELECT new nbc.sma.dto.response.ScheduleResponse(s.id, new nbc.sma.dto.response.UserResponse(s.user.id, s.user.name, s.user.email), s.title, s.task, s.createdAt, s.updatedAt) FROM Schedule s")
+    @Query("SELECT new nbc.sma.dto.response.ScheduleResponse(s.id, new nbc.sma.dto.response.UserResponse(s.user.id, s.user.name, s.user.email), s.title, s.task, s.createdAt, s.updatedAt) FROM Schedule s ORDER BY s.updatedAt DESC")
     Page<ScheduleResponse> findSchedules(Pageable pageable);
 }
