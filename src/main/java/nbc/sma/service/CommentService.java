@@ -5,7 +5,6 @@ import nbc.sma.dto.mapper.CommentMapper;
 import nbc.sma.dto.request.CreateCommentRequest;
 import nbc.sma.dto.request.UpdateCommentRequest;
 import nbc.sma.dto.response.CommentResponse;
-import nbc.sma.dto.response.CommentsResponse;
 import nbc.sma.entity.Comment;
 import nbc.sma.entity.Schedule;
 import nbc.sma.entity.User;
@@ -14,6 +13,8 @@ import nbc.sma.exception.NotFoundException;
 import nbc.sma.repository.CommentRepository;
 import nbc.sma.repository.ScheduleRepository;
 import nbc.sma.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -44,11 +45,8 @@ public class CommentService {
         return commentMapper.toResponse(comment);
     }
 
-    public CommentsResponse findComments(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findWithCommentsById(scheduleId)
-                .orElseThrow(() -> new NotFoundException("Schedule not found"));
-
-        return commentMapper.toResponse(schedule.getComments());
+    public Page<CommentResponse> findComments(Long scheduleId, Pageable pageable) {
+        return commentRepository.findAllBySchedule(scheduleId, pageable);
     }
 
     public void updateComment(Long scheduleId, Long commentId, Long userId, UpdateCommentRequest req) {

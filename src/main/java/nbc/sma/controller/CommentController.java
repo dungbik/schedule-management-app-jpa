@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import nbc.sma.dto.request.CreateCommentRequest;
 import nbc.sma.dto.request.UpdateCommentRequest;
 import nbc.sma.dto.response.CommentResponse;
-import nbc.sma.dto.response.CommentsResponse;
 import nbc.sma.security.SessionConst;
 import nbc.sma.service.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +32,11 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<CommentsResponse> findComments(
-            @PathVariable Long scheduleId
+    public ResponseEntity<Page<CommentResponse>> findComments(
+            @PathVariable Long scheduleId,
+            @PageableDefault Pageable pageable
     ) {
-        CommentsResponse res = commentService.findComments(scheduleId);
+        Page<CommentResponse> res = commentService.findComments(scheduleId, pageable);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
