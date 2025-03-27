@@ -39,7 +39,8 @@ public class ScheduleService {
     }
 
     public Page<ScheduleResponse> findSchedules(Pageable pageable) {
-        return scheduleRepository.findSchedules(pageable);
+        Page<Schedule> schedulePage = scheduleRepository.findByOrderByUpdatedAt(pageable);
+        return schedulePage.map(scheduleMapper::toResponse);
     }
 
     public ScheduleResponse findSchedule(Long id) {

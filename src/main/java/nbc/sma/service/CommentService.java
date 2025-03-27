@@ -49,7 +49,8 @@ public class CommentService {
     }
 
     public Page<CommentResponse> findComments(Long scheduleId, Pageable pageable) {
-        return commentRepository.findAllBySchedule(scheduleId, pageable);
+        Page<Comment> commentPage = commentRepository.findByScheduleIdOrderByUpdatedAt(scheduleId, pageable);
+        return commentPage.map(commentMapper::toResponse);
     }
 
     @Transactional
