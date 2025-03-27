@@ -16,10 +16,12 @@ import nbc.sma.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class CommentService {
 
@@ -28,6 +30,7 @@ public class CommentService {
     private final ScheduleRepository scheduleRepository;
     private final CommentMapper commentMapper;
 
+    @Transactional
     public CommentResponse createComment(Long scheduleId, Long userId, CreateCommentRequest req) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -49,6 +52,7 @@ public class CommentService {
         return commentRepository.findAllBySchedule(scheduleId, pageable);
     }
 
+    @Transactional
     public void updateComment(Long scheduleId, Long commentId, Long userId, UpdateCommentRequest req) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundException("Schedule not found"));
@@ -62,6 +66,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional
     public void deleteComment(Long scheduleId, Long commentId, Long userId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundException("Schedule not found"));
