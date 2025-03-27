@@ -8,6 +8,7 @@ import nbc.sma.dto.request.RegisterRequest;
 import nbc.sma.dto.request.UpdateUserRequest;
 import nbc.sma.dto.response.UserResponse;
 import nbc.sma.dto.response.UsersResponse;
+import nbc.sma.security.SessionConst;
 import nbc.sma.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,20 +53,20 @@ public class UserController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<Void> updateUser(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserRequest req
+            @Valid @RequestBody UpdateUserRequest req,
+            @SessionAttribute(name = SessionConst.LOGIN_USER) Long userId
     ) {
-        userService.update(id, req);
+        userService.update(userId, req);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public ResponseEntity<Void> deleteUser(
-            @PathVariable Long id
+            @SessionAttribute(name = SessionConst.LOGIN_USER) Long userId
     ) {
-        userService.deleteUser(id);
+        userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

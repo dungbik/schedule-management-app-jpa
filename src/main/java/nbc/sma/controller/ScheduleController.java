@@ -6,6 +6,7 @@ import nbc.sma.dto.request.UpdateScheduleRequest;
 import nbc.sma.dto.request.ScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
 import nbc.sma.dto.response.SchedulesResponse;
+import nbc.sma.security.SessionConst;
 import nbc.sma.service.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,10 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<ScheduleResponse> createSchedule(
-            @Valid @RequestBody ScheduleRequest req
+            @Valid @RequestBody ScheduleRequest req,
+            @SessionAttribute(name = SessionConst.LOGIN_USER) Long userId
     ) {
-       ScheduleResponse res = scheduleService.createSchedule(req);
+       ScheduleResponse res = scheduleService.createSchedule(userId, req);
        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
@@ -43,17 +45,19 @@ public class ScheduleController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable Long id,
-            @Valid @RequestBody UpdateScheduleRequest req
+            @Valid @RequestBody UpdateScheduleRequest req,
+            @SessionAttribute(name = SessionConst.LOGIN_USER) Long userId
     ) {
-        scheduleService.updateSchedule(id, req);
+        scheduleService.updateSchedule(id, userId, req);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSchedule(
-            @PathVariable Long id
+            @PathVariable Long id,
+            @SessionAttribute(name = SessionConst.LOGIN_USER) Long userId
     ) {
-        scheduleService.deleteSchedule(id);
+        scheduleService.deleteSchedule(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

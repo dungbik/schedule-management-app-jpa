@@ -8,6 +8,7 @@ import nbc.sma.dto.response.ScheduleResponse;
 import nbc.sma.dto.response.SchedulesResponse;
 import nbc.sma.entity.Schedule;
 import nbc.sma.entity.User;
+import nbc.sma.exception.ForbiddenException;
 import nbc.sma.exception.NotFoundException;
 import nbc.sma.repository.ScheduleRepository;
 import nbc.sma.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -26,8 +28,8 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ScheduleResponse createSchedule(ScheduleRequest req) {
-        User user = userRepository.findById(req.userId())
+    public ScheduleResponse createSchedule(Long userId, ScheduleRequest req) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         Schedule schedule = scheduleMapper.toEntity(req, user);
@@ -50,14 +52,27 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void deleteSchedule(Long id) {
-        scheduleRepository.deleteById(id);
+    public void deleteSchedule(Long id, Long userId) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Schedule not found"));
+
+        boolean isNotOwner = !Objects.equals(userId, schedule.getUser().getId());
+        if (isNotOwner) {
+            throw new ForbiddenException("You are not the owner of this schedule.");
+        }
+
+        scheduleRepository.delete(schedule);
     }
 
     @Transactional
-    public void updateSchedule(Long id, UpdateScheduleRequest req) {
+    public void updateSchedule(Long id, Long userId, UpdateScheduleRequest req) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Schedule not found"));
+
+        boolean isNotOwner = !Objects.equals(userId, schedule.getUser().getId());
+        if (isNotOwner) {
+            throw new ForbiddenException("You are not the owner of this schedule.");
+        }
 
         schedule.update(req.title(), req.task());
         scheduleRepository.save(schedule);
