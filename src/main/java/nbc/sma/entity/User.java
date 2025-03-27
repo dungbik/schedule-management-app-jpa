@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Column(length = 30, nullable = false)
     private String email;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user")
@@ -35,5 +35,9 @@ public class User extends BaseEntity {
     public void update(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 }

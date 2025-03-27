@@ -11,11 +11,11 @@ import nbc.sma.entity.User;
 import nbc.sma.exception.InvalidPasswordException;
 import nbc.sma.exception.NotFoundException;
 import nbc.sma.repository.UserRepository;
+import nbc.sma.security.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,10 +24,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponse register(RegisterRequest req) {
         User user = userMapper.toEntity(req);
+        user.changePassword(passwordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
 
         return userMapper.toResponse(user);
@@ -65,8 +68,7 @@ public class UserService {
         User user = userRepository.findByEmail(req.email())
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        boolean invalidPassword = !Objects.equals(user.getPassword(), req.password());
-
+        boolean invalidPassword = !passwordEncoder.matches(req.password(), user.getPassword());
         if (invalidPassword) {
             throw new InvalidPasswordException();
         }
