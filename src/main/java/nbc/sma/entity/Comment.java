@@ -6,36 +6,29 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "schedule")
-public class Schedule extends BaseEntity {
+@Table(name = "comment")
+public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false)
-    private String title;
+    private String content;
 
-    @Column(length = 200, nullable = false)
-    private String task;
+    @ManyToOne
+    @JoinColumn(name = "schedule_id", nullable = false)
+    private Schedule schedule;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "schedule")
-    private List<Comment> comments;
-
-    public void update(String title, String task) {
-        this.title = title;
-        this.task = task;
+    public void updateContent(String content) {
+        this.content = content;
     }
 }

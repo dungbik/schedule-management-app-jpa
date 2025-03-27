@@ -35,7 +35,7 @@ public class UserController {
             HttpSession session
     ) {
         UserResponse user = userService.login(req);
-        session.setAttribute("userId", user);
+        session.setAttribute(SessionConst.LOGIN_USER, user.id());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

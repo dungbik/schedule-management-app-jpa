@@ -28,7 +28,7 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponse> HandleBizException(BizException e, HttpServletRequest request) {
         HttpStatus status = e.getStatus();
         ErrorResponse res = ErrorResponse.of(status, e.getMessage(), request.getRequestURI());
