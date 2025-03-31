@@ -1,7 +1,9 @@
 package nbc.sma.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nbc.sma.dto.mapper.ScheduleMapper;
+import nbc.sma.dto.request.SearchScheduleRequest;
 import nbc.sma.dto.request.UpdateScheduleRequest;
 import nbc.sma.dto.request.CreateScheduleRequest;
 import nbc.sma.dto.response.ScheduleResponse;
@@ -12,12 +14,13 @@ import nbc.sma.exception.NotFoundException;
 import nbc.sma.repository.ScheduleRepository;
 import nbc.sma.repository.UserRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -38,8 +41,21 @@ public class ScheduleService {
         return scheduleMapper.toResponse(schedule);
     }
 
-    public Page<ScheduleResponse> findSchedules(Pageable pageable) {
-        Page<Schedule> schedulePage = scheduleRepository.findByOrderByUpdatedAt(pageable);
+    public Page<ScheduleResponse> findSchedules(SearchScheduleRequest req) {
+        Page<Schedule> schedulePage;
+        PageRequest pageRequest = PageRequest.of(req.getPage() - 1, req.getSize());
+
+        log.info("findSchedules {} {}", req, pageRequest);
+        if (req.getUserId() != null && req.getUpdatedAt() != null) {
+            schedulePage = scheduleRepository.findByUserIdAndUpdatedAtOrderByUpdatedAtDesc(req.getUserId(), req.getUpdatedAt(), pageRequest);
+        } else if (req.getUserId() != null) {
+            schedulePage = scheduleRepository.findByUserIdOrderByUpdatedAtDesc(req.getUserId(), pageRequest);
+        } else if (req.getUpdatedAt() != null) {
+            schedulePage = scheduleRepository.findByUpdatedAtOrderByUpdatedAtDesc(req.getUpdatedAt(), pageRequest);
+        } else {
+            schedulePage = scheduleRepository.findByOrderByUpdatedAtDesc(pageRequest);
+        }
+
         return schedulePage.map(scheduleMapper::toResponse);
     }
 
