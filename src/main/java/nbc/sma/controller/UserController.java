@@ -1,9 +1,7 @@
 package nbc.sma.controller;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import nbc.sma.dto.request.LoginRequest;
 import nbc.sma.dto.request.RegisterRequest;
 import nbc.sma.dto.request.UpdateUserRequest;
 import nbc.sma.dto.response.UserResponse;
@@ -21,22 +19,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<UserResponse> register(
             @Valid @RequestBody RegisterRequest req
     ) {
         UserResponse res = userService.register(req);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(
-            @Valid @RequestBody LoginRequest req,
-            HttpSession session
-    ) {
-        UserResponse user = userService.login(req);
-        session.setAttribute(SessionConst.LOGIN_USER, user.id());
-        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping

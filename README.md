@@ -15,6 +15,7 @@
 📂 nbc
 └── 📂 sma
     ├── 📂 controller                
+    │   ├── 📄 AuthController    
     │   ├── 📄 CommentController    
     │   ├── 📄 ScheduleController    
     │   └── 📄 UserController  
@@ -91,13 +92,22 @@
 <div style="overflow-x: auto;">
 
 | **Method** | **Endpoint** | **Description** | **Parameters**                                              | **Request Body**                                               | **Response**                                                                                                                             | **Status Code** |
-|------------|--------------|-----------------|-------------------------------------------------------------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `POST`     | `/users/register` | 회원 가입           | 없음                                                          | `{ "name": string, "email": string, "password": string }` | `{ "id": long, "name": string, "email": string }`                                                                                        | `200 OK`        |
-| `POST`     | `/users/login` | 로그인             | 없음                                                          | `{ "email": string, "password": string }`                      | `{ "id": long, "name": string, "email": string }`                                                                                        | `200 OK`        |
-| `GET`      | `/users`     | 회원 목록 조회        | 없음                                           | 없음                                                             | `{ "results" : [ { "id": long, "name": string, "email": string, "password": string, "createdAt": string, "updatedAt": string }, ... ] }` | `200 OK`        |
+|------------|-------------|-----------------|-------------------------------------------------------------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| `POST`     | `/users` | 회원 가입           | 없음                                                          | `{ "name": string, "email": string, "password": string }` | `{ "id": long, "name": string, "email": string }`                                                                                        | `200 OK`        |
+| `GET`      | `/users`    | 회원 목록 조회        | 없음                                           | 없음                                                             | `{ "results" : [ { "id": long, "name": string, "email": string, "password": string, "createdAt": string, "updatedAt": string }, ... ] }` | `200 OK`        |
 | `GET`      | `/users/{id}` | 회원 단건 조회        | Path: <br> - `id`                                           | 없음                                                             | `{ "id": long, "name": string, "email": string }`                          | `200 OK`        |
 | `PUT`      | `/users` | 회원 수정           | 없음                                 | `{ "name": string, "email": string }`                          | 없음                           | `200 OK`        |
-| `DELETE`   | `/users`     | 회원 삭제           | 없음 | 없음                                                             | 없음                                                                                                                                       | `200 OK`        |
+| `DELETE`   | `/users`    | 회원 삭제           | 없음 | 없음                                                             | 없음                                                                                                                                       | `200 OK`        |
+
+</div>
+
+#### Auth
+
+<div style="overflow-x: auto;">
+
+| **Method** | **Endpoint**  | **Description** | **Parameters**                                              | **Request Body**                                               | **Response**                                                                                                                             | **Status Code** |
+|------------|---------------|-----------------|-------------------------------------------------------------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| `POST`     | `/auth/login` | 로그인             | 없음                                                          | `{ "email": string, "password": string }`                      | `{ "id": long, "name": string, "email": string }`                                                                                        | `200 OK`        |
 
 </div>
 
